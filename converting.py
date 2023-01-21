@@ -9,11 +9,11 @@ def ascii_to_hex(str):
 def hex_to_ascii(hexx):
     return bytearray.fromhex(hexx).decode("ascii")
 
-def ascii_to_b64(str):
-    return base64.b64encode(str.encode("ascii")).decode("ascii")
+def hex_to_b64(str):
+    return base64.b64encode(str.fromhex().encode("ascii")).decode("ascii")
 
-def b64_to_ascii(b):
-    return base64.b64decode(b.encode("ascii")).decode("ascii")
+def b64_to_hex(b):
+    return base64.b64decode(b.encode("ascii")).decode("ascii").hex()
 
 def main():
     # Tests validity of conversion functions

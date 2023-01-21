@@ -50,11 +50,9 @@ def byteXOR(file):
             testlines.append(ciphersXOR.xor_bytestrings(line.encode(), testval).hex())
             lines = testlines
 
-    val = 0
     lineScores = {}
     for val in range(256):
         #print("Processing byte: " + str(val))
-        i = 0
         # Analyze each line
         for line in lines:
             # First xor to try to decode
@@ -66,7 +64,6 @@ def byteXOR(file):
                 lineScores[plaintext] = score
             except UnicodeError:
                 failed = True
-        val += 1
     
     # Once all scores have been generated, print the lines with the highest score
     topLines = sorted(lineScores.items(), key=lambda x:x[1], reverse=True)
@@ -84,4 +81,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
