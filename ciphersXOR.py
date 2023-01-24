@@ -4,7 +4,10 @@ def match_key(plaintext, key):
     # Matches lengths of plaintext/key by either making key larger or making key smaller
     # Returns key
     plainArr = bytearray(plaintext)
-    newKey = bytearray([key])
+    hexkey = hex(key)[2:]
+    if(len(hexkey) % 2 == 1):
+        hexkey = '0' + hexkey # Pad with 0 to make compatible with fromhex
+    newKey = bytearray.fromhex(hexkey)
     if(len(plainArr) > len(newKey)):
         i = 0
         while(len(plainArr) > len(newKey)):
@@ -21,7 +24,8 @@ def xor_bytestrings(plaintext, key):
 def main():
 
     #test = "basic"
-    test = "complex"
+    #test = "complex"
+    test = "typetest"
 
     if(test == "basic"):
         # Basic functionality test
@@ -29,9 +33,6 @@ def main():
         test_b2 = b'01001100'
         out1 = xor_bytestrings(test_b1, test_b2) # Should return all 0s
         out2 = xor_bytestrings(test_b1, test_b1) # Should return all 1s
-
-        #print(out1)
-        #print(out2)
 
         # Test key length matching
         test_b3 = bytes.fromhex("ff")
@@ -57,6 +58,13 @@ def main():
         ciphertext = bytes.fromhex(heXORed)
         plaintext_surely = xor_bytestrings(ciphertext, bytes(key)).decode("ascii")
         print("Decrypted: " + plaintext_surely)
+
+    elif(test == "typetest"):
+        key = 287
+        hexkey = hex(key)
+        print(hexkey)
+        print(hexkey[2:])
+        print(type(hex(key)))
 
 
 

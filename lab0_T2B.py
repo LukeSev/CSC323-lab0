@@ -52,22 +52,21 @@ def byteXOR(file):
 
     lineScores = {}
     for val in range(256):
-        #print("Processing byte: " + str(val))
         # Analyze each line
         for line in lines:
             # First xor to try to decode
             try:
                 plaintext = ciphersXOR.xor_bytestrings(bytes.fromhex(line), val).decode()
-                #plaintext = ciphersXOR.xor_bytestrings(bytes.fromhex(line), bite).decode()
                 score = scorePlaintext(plaintext)
-                #print(plaintext)
-                lineScores[plaintext] = score
+                if(score > 500): # Only add plaintext to dictionary if it at least somewhat resembles English
+                    lineScores[plaintext] = score
             except UnicodeError:
                 failed = True
     
     # Once all scores have been generated, print the lines with the highest score
     topLines = sorted(lineScores.items(), key=lambda x:x[1], reverse=True)
     j = 0
+    b = 0
     while((j < 5) and (j < len(topLines))):
         currLine = topLines[j] # Will give us tuple with both the line and its score
         print("\n\nSCORE POSITION: " + str(j+1))
