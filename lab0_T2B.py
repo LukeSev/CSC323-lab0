@@ -55,19 +55,24 @@ def scoreEngPlaintext(plaintext):
     # First do freq analysis
     # First perform frequency analysis
     freqDict = {}
+    dictSize = 0
     for letter in plaintext.lower():
         freq = freqDict.get(letter)
-        flag = scoreDict.get(letter)
-        if(flag is not None): # Only add if it's a character with a score
+        valid = scoreDict.get(letter)
+        if(valid is None): # Only add if it's a character with a score
+            #print("Invalid plaintext")
+            dictSize += 0 # NOP
+        else:
             if(freq is None):
                 freqDict[letter] = 1
             else:
                 freqDict[letter] += 1
+            dictSize += 1
 
-    # Now sort by frequency
-    #freqs = sorted(freqDict)
+    # Now convert to relative frequencies
+    for character in freqDict:
+        freqDict[character] /= dictSize
 
-    #print(freqDict)
     # Now that we have both the frequencies of our plaintext and the frequencies of the English language, let's compare
     # To do so, we'll sum all the differences between the frequencies and divide by the number of characters encountered
     sum = 0
@@ -93,6 +98,8 @@ def byteXOR(file):
             lines = testlines
 
     lineScores = {}
+    errors = 0
+    successful = 0
     for val in range(256):
         # Analyze each line
         for line in lines:
@@ -100,11 +107,13 @@ def byteXOR(file):
             try:
                 plaintext = ciphersXOR.xor_bytestrings(bytes.fromhex(line), val).decode()
                 score = scoreEngPlaintext(plaintext)
-                if(score > 500): # Only add plaintext to dictionary if it at least somewhat resembles English
+                if(score > 0): # Only add plaintext to dictionary if it at least somewhat resembles English
                     lineScores[plaintext] = score
+                successful += 1
             except UnicodeError:
+                errors += 1
                 failed = True
-    
+
     # Once all scores have been generated, print the lines with the highest score
     topLines = sorted(lineScores.items(), key=lambda x:x[1], reverse=True)
     j = 0
