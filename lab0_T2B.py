@@ -37,6 +37,47 @@ def scorePlaintext(plaintext):
         score *= 100
     return score
 
+def scoreEngPlaintext(plaintext):
+    # If plaintext doesn't contain printable ascii, throw it out
+
+    # First do freq analysis
+    # First perform frequency analysis
+    freqDict = {}
+    for letter in plaintext.lower():
+        freq = freqDict.get(letter)
+        if(freq is None):
+            freqDict[letter] = 1
+        else:
+            freqDict[letter] += 1
+
+    # Now sort by frequency
+    #freqs = sorted(freqDict)
+
+
+    # Create dictionary that assigns values of each ascii character's freq
+    # Frequency info taken from https://millikeys.sourceforge.net/freqanalysis.html
+    # Note: Ignores case
+    scoreDict = {' ':0.1874, 'e':0.096, 't':0.0702, 'a':0.0621, 'o':0.0584, 'i':0.0522, 'n':0.0521, 'h':0.0487,
+    's':0.0487, 'r':0.0443, 'd': 0.0352, 'l':0.032, 'u':0.0225, 'm':0.0194, 'c':0.0188, 'w':0.0182, 'g':0.0166,
+    'f':0.0162, 'y':0.0156, 'p':0.0131, ',':0.0124, '.':0.0121, 'b':0.0119, 'k':0.0074, 'v':0.0071, '"':0.0067, 
+    "'":0.0044, '-':0.0026, '?':0.0012, 'x':0.0012, 'j':0.0012, ';':0.0008, '!':0.0008, 'q':0.0007, 'z':0.0007,
+    ':':0.0003, '1':0.0002, '_':0.0001, '0':0.0001, ')':0.0001, '*':0.0001, '(':0.0001, '2':0.0001, '`':0.0001,
+    '3':0.0001, '9':0.0001, '5':0.0001, '4':0.0001, '8':0.0001, '7':0.0001, '6':0.0001, '/':0.001, '[':0.0001,
+    ']':0.0001, '=':0.0001, '>':0.0001, '~':0.0001, '<':0.0001, '#':0.0001, '&':0.0001, '{':0.0001, '}':0.0001,
+    '^':0.0001, '|':0.0001, '@':0.0001, '%':0.0001, '$':0.0001}
+
+    print(freqDict)
+    # Now that we have both the frequencies of our plaintext and the frequencies of the English language, let's compare
+    # To do so, we'll sum all the differences between the frequencies and divide by the number of characters encountered
+    sum = 0
+    for freq in freqDict:
+        sum += abs(freqDict[freq] - scoreDict[freq])
+    avg_diff = sum / len(freqDict)
+
+    # Smaller deviation means a closer adherence to english language, so we want reciprocal relationship with our avg_diff
+    return 1 / avg_diff
+
+
 def byteXOR(file):
     infile = open(file, 'r')
     lines = infile.readlines()
