@@ -40,20 +40,6 @@ def scorePlaintext(plaintext):
 def scoreEngPlaintext(plaintext):
     # If plaintext doesn't contain printable ascii, throw it out
 
-    # First do freq analysis
-    # First perform frequency analysis
-    freqDict = {}
-    for letter in plaintext.lower():
-        freq = freqDict.get(letter)
-        if(freq is None):
-            freqDict[letter] = 1
-        else:
-            freqDict[letter] += 1
-
-    # Now sort by frequency
-    #freqs = sorted(freqDict)
-
-
     # Create dictionary that assigns values of each ascii character's freq
     # Frequency info taken from https://millikeys.sourceforge.net/freqanalysis.html
     # Note: Ignores case
@@ -66,7 +52,22 @@ def scoreEngPlaintext(plaintext):
     ']':0.0001, '=':0.0001, '>':0.0001, '~':0.0001, '<':0.0001, '#':0.0001, '&':0.0001, '{':0.0001, '}':0.0001,
     '^':0.0001, '|':0.0001, '@':0.0001, '%':0.0001, '$':0.0001}
 
-    print(freqDict)
+    # First do freq analysis
+    # First perform frequency analysis
+    freqDict = {}
+    for letter in plaintext.lower():
+        freq = freqDict.get(letter)
+        flag = scoreDict.get(letter)
+        if(flag is not None): # Only add if it's a character with a score
+            if(freq is None):
+                freqDict[letter] = 1
+            else:
+                freqDict[letter] += 1
+
+    # Now sort by frequency
+    #freqs = sorted(freqDict)
+
+    #print(freqDict)
     # Now that we have both the frequencies of our plaintext and the frequencies of the English language, let's compare
     # To do so, we'll sum all the differences between the frequencies and divide by the number of characters encountered
     sum = 0
@@ -98,7 +99,7 @@ def byteXOR(file):
             # First xor to try to decode
             try:
                 plaintext = ciphersXOR.xor_bytestrings(bytes.fromhex(line), val).decode()
-                score = scorePlaintext(plaintext)
+                score = scoreEngPlaintext(plaintext)
                 if(score > 500): # Only add plaintext to dictionary if it at least somewhat resembles English
                     lineScores[plaintext] = score
             except UnicodeError:
