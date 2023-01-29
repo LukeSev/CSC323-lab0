@@ -3,21 +3,6 @@ import converting
 def match_key(plaintext, key):
     # Matches lengths of plaintext/key by either making key larger or making key smaller
     # Returns key
-    
-    # plainArr = bytearray(plaintext)
-    # hexkey = hex(key)[2:]
-    # if(len(hexkey) % 2 == 1):
-    #     hexkey = '0' + hexkey # Pad with 0 to make compatible with fromhex
-    # newKey = bytearray.fromhex(hexkey)
-    # if(len(plainArr) > len(newKey)):
-    #     i = 0
-    #     while(len(plainArr) > len(newKey)):
-    #         newKey.append(newKey[i])
-    #         i += 1
-    # elif(len(plainArr) < len(newKey)):
-    #     newKey = newKey[:len(plainArr)]
-    # return bytes(newKey)
-
     if(len(plaintext) > len(key)):
         i = 0
         while(len(plaintext) > len(key)):

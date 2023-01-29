@@ -3,7 +3,7 @@ import ciphersXOR
 import converting
 import base64
 
-SCORE_THRESHOLD = 50
+SCORE_THRESHOLD = 5000
 
 def findKey(byteArr):
     # Takes in an array of bytes and tries to find a key that decrypts to something close to English
