@@ -4,7 +4,7 @@ import ciphersXOR
 import converting
 import base64
 
-SCORE_THRESHOLD = 0
+SCORE_THRESHOLD = 300
 
 def shiftLetters(letters, amt):
     # Given string of chars, shift all chars by specified amount of chars
@@ -48,15 +48,13 @@ def findCharKeyLength(ciphertext, start):
         # Now see if any letters 
         key = findCharKey(''.join(letters))
         if(key[0] > SCORE_THRESHOLD):
-            #print("Key length found!!! \nChar: {} (shift amount {}) \nKey Size: {}\n\n".format(key[1], ord(key[1])-97, n))
             return (n, key[1], key[2], key[0])
     return (0, '', "", 0)
 
 def doVigenereStuff(ciphertext, keyInfo):
     # Takes ciphertext and keyInfo with a specific keySize, and then does rest of Vigenere Cipher
-    # Returns tuple in format: (key, plaintext, score sum)
+    # Returns tuple in format: (key, plaintext)
     keySize = keyInfo[0]
-    scoreSum = keyInfo[3]
     # Build the key and plaintext as each Caesar Cipher is completed
     plaintext = list("\0" * len(ciphertext))
     lab0_T2C.fillPlaintext(plaintext, keyInfo[2], keySize, 0)

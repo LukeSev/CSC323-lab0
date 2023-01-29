@@ -3,7 +3,7 @@ import ciphersXOR
 import converting
 import base64
 
-SCORE_THRESHOLD = 5000
+SCORE_THRESHOLD = 100
 
 def findKey(byteArr):
     # Takes in an array of bytes and tries to find a key that decrypts to something close to English
@@ -13,7 +13,7 @@ def findKey(byteArr):
     for val in range(256):
             try:
                 plaintextLetters = ciphersXOR.xor_bytestrings(byteArr, val).decode()
-                score = lab0_T2B.scoreEngPlaintext(plaintextLetters)
+                score = lab0_T2B.scorePlaintext(plaintextLetters)
                 if((score > SCORE_THRESHOLD) and (score > best[0])): # Only add plaintext to dictionary if it at least somewhat resembles English
                     best = (score, val, plaintextLetters)
             except UnicodeError:
@@ -37,7 +37,7 @@ def findKeyLength(ciphertext):
         # Now do some XORing to see if any yield passable English
         best = findKey(byteArr)
         if(best[0] > 0):
-            print("\nKey found! \nByte: {} \nKeySize: {}".format(best[1], n))
+            print("\nKey found! \nKeySize: {}".format(n))
             return (best[1], n, best[2])
 
 def fillPlaintext(plaintext, letters, keySize, start):
@@ -78,7 +78,6 @@ def multiByteDecrypt(file):
 
 def main():
     multiByteDecrypt("Lab0.TaskII.C.txt")
-    #byteXOR("test.txt")
 
 if __name__ == '__main__':
     main()
