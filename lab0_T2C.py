@@ -66,9 +66,13 @@ def multiByteDecrypt(file):
         for j in range(i,len(cArr),keySize):
             byteArr.append(cArr[j])
         curr = findKey(byteArr)
+        keyArr.append(curr[1])
         fillPlaintext(plaintext, curr[2], keySize, i)
 
     # Once char array filled for plaintext, convert back to string and print
+    keyArr.reverse()
+    key = bytes(keyArr[:keySize]).hex()
+    print("Key:0x{}\n".format(key))
     print("\nPlaintext:")
     print(''.join(plaintext))
 
